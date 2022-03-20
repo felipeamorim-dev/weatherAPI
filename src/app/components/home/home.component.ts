@@ -1,5 +1,5 @@
 import { environment } from './../../../environments/environment';
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { WeatherService } from 'src/app/services/weather.service';
 import { CurrentLocation } from './../../models/current-location';
 import { CurrentWeather } from './../../models/current-weather';
@@ -9,10 +9,10 @@ import { CurrentWeather } from './../../models/current-weather';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, DoCheck {
 
 
-  public weather: CurrentWeather = {
+  public weather: CurrentWeather = localStorage.getItem("weather") ? JSON.parse(localStorage.getItem("weather") || '{}') : {
     name: 'Recife',
     weather: {
       id: 0,
@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
       icon: ''
     },
     main: {
-      temp: 0,
+      temp: 30,
       temp_min: 0,
       temp_max: 0,
       humidity: 0
@@ -47,6 +47,10 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngDoCheck(): void {
+    this.setLocalStorate();
+  }
+
   public submit(input: string){
     this.weatherService.getCurrentLocation(input).subscribe(
       resp => {
@@ -70,9 +74,11 @@ export class HomeComponent implements OnInit {
         this.weather.wind.speed = resp.wind.speed;
         this.weather.wind.deg = resp.wind.deg;
         this.image = environment.ICON + this.weather.weather.icon + "@2x.png";
-        console.log(this.image, this.weather.weather.icon);
       })
     });
+  }
 
+  public setLocalStorate(){
+    localStorage.setItem('weather', JSON.stringify(this.weather))
   }
 }
