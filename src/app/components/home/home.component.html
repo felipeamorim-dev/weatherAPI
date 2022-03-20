@@ -1,0 +1,22 @@
+
+<mat-card class="form mat-elevation-z4">
+  <mat-card-title>Pesquise o clima das cidade</mat-card-title>
+  <form class="form">
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Cidade</mat-label>
+      <input matInput placeholder="Nome da Cidade" #box>
+    </mat-form-field>
+  </form>
+
+  <button mat-raised-button color="primary" (click)="submit(box.value)"> buscar </button>
+</mat-card>
+
+<mat-card class="form mat-elevation-z4">
+  <mat-card-title>{{weather.name}}</mat-card-title>
+  <div>
+    <span>{{weather.main.temp | number:'1.0-1' }}°C</span>
+    <img [src]="image" alt="icon">
+    <span>{{weather.weather.description}}</span>
+  </div>
+</mat-card>
+
