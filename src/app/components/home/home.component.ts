@@ -11,6 +11,7 @@ import { CurrentWeather } from './../../models/current-weather';
 })
 export class HomeComponent implements OnInit, DoCheck {
 
+  pesquisa: boolean = false;
 
   public weather: CurrentWeather = localStorage.getItem("weather") ? JSON.parse(localStorage.getItem("weather") || '{}') : {
     name: 'Recife',
@@ -32,13 +33,7 @@ export class HomeComponent implements OnInit, DoCheck {
     }
   }
 
-  public location: CurrentLocation = {
-    name: '',
-    lat: 0,
-    lon: 0,
-    country: '',
-    state: ''
-  }
+
 
   public image: string = "http://openweathermap.org/img/wn/03n@2x.png";
 
@@ -52,15 +47,23 @@ export class HomeComponent implements OnInit, DoCheck {
   }
 
   public submit(input: string){
+    this.pesquisa = true;
     this.weatherService.getCurrentLocation(input).subscribe(
       resp => {
-      this.location.name = resp[0].name;
-      this.location.lat = resp[0].lat;
-      this.location.lon = resp[0].lon;
-      this.location.country = resp[0].country;
-      this.location.state = resp[0].state;
+        const location: CurrentLocation = {
+          name: '',
+          lat: 0,
+          lon: 0,
+          country: '',
+          state: ''
+        }
+      location.name = resp[0].name;
+      location.lat = resp[0].lat;
+      location.lon = resp[0].lon;
+      location.country = resp[0].country;
+      location.state = resp[0].state;
 
-      this.weatherService.getCurrentWeather(this.location.lat, this.location.lon).subscribe(resp => {
+      this.weatherService.getCurrentWeather(location.lat, location.lon).subscribe(resp => {
         resp;
         this.weather.name = resp.name;
         this.weather.weather.id = resp.weather[0].id;
@@ -74,11 +77,16 @@ export class HomeComponent implements OnInit, DoCheck {
         this.weather.wind.speed = resp.wind.speed;
         this.weather.wind.deg = resp.wind.deg;
         this.image = environment.ICON + this.weather.weather.icon + "@2x.png";
+        this.pesquisa = false;
       })
     });
   }
 
   public setLocalStorate(){
     localStorage.setItem('weather', JSON.stringify(this.weather))
+  }
+
+  console(){
+    console.log('submit');
   }
 }
