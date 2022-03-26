@@ -85,8 +85,4 @@ export class HomeComponent implements OnInit, DoCheck {
   public setLocalStorate(){
     localStorage.setItem('weather', JSON.stringify(this.weather))
   }
-
-  console(){
-    console.log('submit');
-  }
 }
