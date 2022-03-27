@@ -15,13 +15,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { AlertComponent } from './components/alert/alert.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    FooterComponent
+    FooterComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,

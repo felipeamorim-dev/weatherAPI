@@ -11,7 +11,8 @@ import { CurrentWeather } from './../../models/current-weather';
 })
 export class HomeComponent implements OnInit, DoCheck {
 
-  pesquisa: boolean = false;
+  public pesquisa: boolean = false;
+  private mostraError: boolean = false;
 
   public weather: CurrentWeather = localStorage.getItem("weather") ? JSON.parse(localStorage.getItem("weather") || '{}') : {
     name: 'Recife',
@@ -48,8 +49,8 @@ export class HomeComponent implements OnInit, DoCheck {
 
   public submit(input: string){
     this.pesquisa = true;
-    this.weatherService.getCurrentLocation(input).subscribe(
-      resp => {
+    this.weatherService.getCurrentLocation(input).subscribe({
+      next: resp => {
         const location: CurrentLocation = {
           name: '',
           lat: 0,
@@ -57,14 +58,23 @@ export class HomeComponent implements OnInit, DoCheck {
           country: '',
           state: ''
         }
-      location.name = resp[0].name;
-      location.lat = resp[0].lat;
-      location.lon = resp[0].lon;
-      location.country = resp[0].country;
-      location.state = resp[0].state;
+        location.name = resp[0].name;
+        location.lat = resp[0].lat;
+        location.lon = resp[0].lon;
+        location.country = resp[0].country;
+        location.state = resp[0].state;
+        this.searchweather(location.lat, location.lon);
 
-      this.weatherService.getCurrentWeather(location.lat, location.lon).subscribe(resp => {
-        resp;
+    },
+      error: error => {
+        if(error) this.mostraError = !this.mostraError;
+      }
+    });
+  }
+
+  private searchweather(lat: number, lon: number){
+    this.weatherService.getCurrentWeather(lat, lon).subscribe({
+      next: resp => {
         this.weather.name = resp.name;
         this.weather.weather.id = resp.weather[0].id;
         this.weather.weather.main = resp.weather[0].main;
@@ -78,11 +88,19 @@ export class HomeComponent implements OnInit, DoCheck {
         this.weather.wind.deg = resp.wind.deg;
         this.image = environment.ICON + this.weather.weather.icon + "@2x.png";
         this.pesquisa = false;
-      })
-    });
+      },
+      error: error => {
+        if(error) this.mostraError = !this.mostraError;;
+      }
+    })
   }
 
   public setLocalStorate(){
     localStorage.setItem('weather', JSON.stringify(this.weather))
+  }
+
+  public mError(): boolean{
+    this.pesquisa = false;
+    return this.mostraError;
   }
 }

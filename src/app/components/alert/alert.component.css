@@ -1,0 +1,19 @@
+.container {
+  width: 300px;
+  background-color: brown;
+  color: white;
+  position: fixed;
+  bottom: 72px;
+  left: 6px;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.space {
+  padding-left: 16px;
+}
