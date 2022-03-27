@@ -68,6 +68,7 @@ export class HomeComponent implements OnInit, DoCheck {
     },
       error: error => {
         if(error) this.mostraError = !this.mostraError;
+        setTimeout(() =>{this.mostraError = !this.mostraError}, 3000);
       }
     });
   }
@@ -90,7 +91,8 @@ export class HomeComponent implements OnInit, DoCheck {
         this.pesquisa = false;
       },
       error: error => {
-        if(error) this.mostraError = !this.mostraError;;
+        if(error) this.mostraError = !this.mostraError;
+        setTimeout(() =>{this.mostraError = !this.mostraError}, 3000);
       }
     })
   }
