@@ -10,7 +10,8 @@ export const environment = {
   APPID: '05e8b951bac03749e05602bebd647057',
   UNITS:'metric',
   LANG:'pt_br',
-  LIMIT: 5
+  LIMIT: 5,
+  LOCATION: 'Recife'
 };
 
 /*
